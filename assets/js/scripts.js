@@ -4,7 +4,6 @@ var city = "Ottawa"
 //Get the current time and date
 var dateTime = moment().format('YYYY-MM-DD HH:MM:SS')
 var date = moment().format('L');
-
 var cityHist = [];
 //Save the text value of the search and save it to an array and storage
 $('.search').on("click", function (event) {
@@ -14,7 +13,6 @@ $('.search').on("click", function (event) {
 		return;
 	};
 	cityHist.push(city);
-
 	localStorage.setItem('city', JSON.stringify(cityHist));
 	fiveForecastEl.empty();
 	getHistory();
@@ -27,14 +25,11 @@ function getHistory() {
 	contHistEl.empty();
 
 	for (let i = 0; i < cityHist.length; i++) {
-
 		var rowEl = $('<row>');
 		var btnEl = $('<button>').text(`${cityHist[i]}`)
-
 		rowEl.addClass('row histBtnRow');
 		btnEl.addClass('btn btn-outline-secondary histBtn');
 		btnEl.attr('type', 'button');
-
 		contHistEl.prepend(rowEl);
 		rowEl.append(btnEl);
 	} if (!city) {
@@ -53,7 +48,7 @@ function getHistory() {
 var cardTodayBody = $('.cardBodyToday')
 //weather data and display
 function getWeatherToday() {
-	var getUrlCurrent = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${key}`;
+	var getUrlCurrent = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${key}`;
 
 	$(cardTodayBody).empty();
 
@@ -63,13 +58,15 @@ function getWeatherToday() {
 	}).then(function (response) {
 		$('.cardTodayCityName').text(response.name);
 		$('.cardTodayDate').text(date);
+		//Icons
+		$('.icons').attr('src', `https://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`);
+		
 		// Temperature
-		var pEl = $('<p>').text(`Temperature: ${response.main.temp} °F`);
+		var pEl = $('<p>').text(`Temperature: ${response.main.temp} °C`);
 		cardTodayBody.append(pEl);
 		//Wind Speed
-		var pElWind = $('<p>').text(`Wind: ${response.wind.speed} MPH`);
+		var pElWind = $('<p>').text(`Wind: ${response.wind.speed} KM/H`);
 		cardTodayBody.append(pElWind);
-
 		//Humidity
 		var pElHumid = $('<p>').text(`Humidity: ${response.main.humidity} %`);
   		cardTodayBody.append(pElHumid);
@@ -89,7 +86,7 @@ function getWeatherToday() {
 var fiveForecastEl = $('.fiveForecast');
 
 function getFiveDayForecast() {
-	var getUrlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${key}`;
+	var getUrlFiveDay = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${key}`;
 
 	$.ajax({
 		url: getUrlFiveDay,
@@ -112,7 +109,7 @@ function getFiveDayForecast() {
 				myWeather.push(testObj);
 			}
 		})
-		//Inject the cards to the screen 
+		//Display 5 days weather
 		for (let i = 0; i < myWeather.length; i++) {
 
 			var divElCard = $('<div>');
@@ -129,17 +126,17 @@ function getFiveDayForecast() {
 			var divElBody = $('<div>');
 			divElBody.attr('class', 'card-body');
 			divElCard.append(divElBody);
-
+			// Icon
 			var divElIcon = $('<img>');
 			divElIcon.attr('class', 'icons');
 			divElIcon.attr('src', `https://openweathermap.org/img/wn/${myWeather[i].icon}@2x.png`);
 			divElBody.append(divElIcon);
 
 			//Temp
-			var pElTemp = $('<p>').text(`Temperature: ${myWeather[i].temp} °F`);
+			var pElTemp = $('<p>').text(`Temperature: ${myWeather[i].temp} °C`);
 			divElBody.append(pElTemp);
 			//Feels Like
-			var pElFeel = $('<p>').text(`Feels Like: ${myWeather[i].feels_like} °F`);
+			var pElFeel = $('<p>').text(`Feels Like: ${myWeather[i].feels_like} °C`);
 			divElBody.append(pElFeel);
 			//Humidity
 			var pElHumid = $('<p>').text(`Humidity: ${myWeather[i].humidity} %`);
@@ -148,7 +145,7 @@ function getFiveDayForecast() {
 	});
 };
 
-//Allows for the example data to load for Denver
+//Allows the data to load for the city
 function initLoad() {
 
 	var cityHistStore = JSON.parse(localStorage.getItem('city'));
