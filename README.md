@@ -8,7 +8,7 @@ To use the dashboard type the name of a city in the search box and select the sp
 
 Below is a screen shot of the weather dashboard:
 
-![The finished Weather Dashboard](assets/images/Weather-Dashboard.png)
+![The finished Weather Dashboard](assets/image/weatherDashboard.png)
 
 Below is a link to the site:
 
