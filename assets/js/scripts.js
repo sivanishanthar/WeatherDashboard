@@ -76,9 +76,6 @@ function getWeatherToday() {
 		var cityLat = response.coord.lat;
 		// console.log(cityLat);
 
-		var getUrlUvi = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLon}&exclude=hourly,daily,minutely&appid=${key}`;
-
-
 	});
 	getFiveDayForecast();
 };
